@@ -38,9 +38,18 @@ A reboot of the VM is required to boot the newer kernel version, then run the lu
 ./build_lustre_script.sh
 ```
 
-At the end, you can attach a drive to the VM and mkfs.lustre with a ldiskfs backend
+You can use the qcow image you now have a a golden image to create server and client nodes for a lustre
+cluster
+
+Once that's done, you can attach a drive to the VM and mkfs.lustre with a ldiskfs backend
+
+First the MDS/MGS node
+```
+mkfs.lustre --mdt --mgs --fsname=lustre1 --index=0 --backfstype=ldiskfs /dev/vdb
+```
+
+Then each OSS node
 
 ```
-mkfs.lustre   --ost   --mgsnode=192.168.100.100@tcp  --backfstype=ldiskfs --fsname=lustre1   --index=2   /dev/vdb
-
+ mkfs.lustre   --ost   --mgsnode=<MGS NID>  --backfstype=ldiskfs --fsname=lustre1   --index=2   /dev/vdb
 ```

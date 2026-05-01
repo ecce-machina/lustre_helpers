@@ -20,9 +20,9 @@ Then you create a VM with the Rocky ISO
 
 ```
 virt-install --name rocky9-lustre-build2 --memory 4096 --vcpus 2 --cpu host \ 
-    --disk path=/home/doob/vms/rocky9-lustre-build2.qcow2,size=40,format=qcow2 \ 
+    --disk path=<path to vms>/rocky9-lustre-build2.qcow2,size=40,format=qcow2 \ 
      --os-variant rocky9 --network bridge=br-lustre,model=virtio --graphics spice \
-      --console pty,target_type=serial --cdrom /home/doob/Downloads/Rocky-9.7-x86_64-dvd.iso
+      --console pty,target_type=serial --cdrom ~/Downloads/Rocky-9.7-x86_64-dvd.iso
 
 ```
 

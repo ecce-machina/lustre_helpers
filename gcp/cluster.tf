@@ -201,6 +201,12 @@ resource "google_compute_instance" "client" {
       --fsname ${var.fsname} \
       --mgs-nid 10.10.0.10@tcp \
       --mountpoint /mnt/lustre
+
+    bash configure_slurm_client.sh \
+      --role ${count.index == 0 ? "controller" : "worker"} \
+      --node-name lustre-client${count.index + 1} \
+      --controller-host lustre-client1
+
   EOF
 
   depends_on = [

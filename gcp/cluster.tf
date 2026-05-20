@@ -159,7 +159,7 @@ resource "google_compute_instance" "oss" {
 }
 
 resource "google_compute_instance" "client" {
-  count        = var.client_count
+  count = var.client_count
 
   name         = "lustre-client${count.index + 1}"
   machine_type = var.machine_type
@@ -194,7 +194,7 @@ resource "google_compute_instance" "client" {
       cd /opt/lustre-helpers
     fi
     
-    sleep 30
+    sleep 90
 
     bash configure_lustre_role.sh \
       --role client \

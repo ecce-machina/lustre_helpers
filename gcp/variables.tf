@@ -45,5 +45,5 @@ variable "oss_count" {
 
 variable "client_count" {
   type    = number
-  default = 1
+  default = 2
 }

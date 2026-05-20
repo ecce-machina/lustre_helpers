@@ -4,18 +4,34 @@ set -euxo pipefail
 ROLE=""
 NODE_NAME=""
 CONTROLLER_HOST="lustre-client1"
+MUNGE_KEY=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --role) ROLE="$2"; shift 2 ;;
     --node-name) NODE_NAME="$2"; shift 2 ;;
     --controller-host) CONTROLLER_HOST="$2"; shift 2 ;;
+    --munge-key) MUNGE_KEY="$2"; shift 2 ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
   esac
 done
 
 dnf -y install epel-release || true
 dnf -y install munge munge-libs slurm slurm-slurmd slurm-slurmctld fio || true
+
+if [[ -z "$MUNGE_KEY" ]]; then
+  echo "ERROR: --munge-key is required"
+  exit 1
+fi
+
+install -d -m 0700 -o munge -g munge /etc/munge
+
+cat > /etc/munge/munge.key <<EOF
+${MUNGE_KEY}
+EOF
+
+chown munge:munge /etc/munge/munge.key
+chmod 0400 /etc/munge/munge.key
 
 systemctl enable --now munge
 

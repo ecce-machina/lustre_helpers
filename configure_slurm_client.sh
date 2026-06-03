@@ -10,6 +10,8 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --role) ROLE="$2"; shift 2 ;;
     --node-name) NODE_NAME="$2"; shift 2 ;;
+    --client-range) CLIENT_RANGE="$2"; shift 2 ;;
+    --cpu-per-client) CPUS_PER_CLIENT="$2"; shift 2 ;;
     --controller-host) CONTROLLER_HOST="$2"; shift 2 ;;
     --munge-key) MUNGE_KEY="$2"; shift 2 ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
@@ -51,7 +53,7 @@ SchedulerType=sched/backfill
 SelectType=select/cons_tres
 SelectTypeParameters=CR_Core
 
-NodeName=lustre-client[1-2] CPUs=4 State=UNKNOWN
+NodeName=${CLIENT_RANGE} CPUs=${CPUS_PER_CLIENT} State=UNKNOWN
 PartitionName=debug Nodes=lustre-client[1-2] Default=YES MaxTime=INFINITE State=UP
 EOF
 

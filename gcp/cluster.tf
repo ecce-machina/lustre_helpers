@@ -210,6 +210,13 @@ resource "google_compute_instance" "client" {
       --cpu-per-client 4 \
       --munge-key '${random_password.munge_key.result}'
 
+	%{if var.enable_monitoring && count.index == 0}
+    bash configure_monitoring.sh \
+       --mds-ip "10.10.0.10" \
+       --oss-ips "${join(",", [for i in range(var.oss_count) : "10.10.0.${20 + i}"])}" \
+       --client-ips "${join(",", [for i in range(var.client_count) : "10.10.0.${30 + i}"])}"
+	%{endif}
+
   EOF
 
   depends_on = [

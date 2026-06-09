@@ -1,0 +1,29 @@
+resource "google_compute_instance" "monitoring" {
+  count        = var.enable_monitoring ? 1 : 0
+  name         = "lustre-monitoring"
+  machine_type = "e2-standard-2"
+  zone         = var.zone
+
+  tags = ["lustre"]
+
+  boot_disk {
+    initialize_params {
+      image = "rocky-linux-cloud/rocky-linux-9"
+      size  = 40
+      type  = "pd-balanced"
+    }
+  }
+
+  network_interface {
+    subnetwork = google_compute_subnetwork.lustre.id
+    network_ip = "10.10.0.40"
+
+    access_config {}
+  }
+
+  bash configure_monitoring.sh \
+      --mds_ip     = ${google_compute_instance.mds.network_interface[0].network_ip} \
+      --oss_ips    = "${join(",", google_compute_instance.oss[*].network_interface[0].network_ip)}" \
+      --client_ips = "${join(",", google_compute_instance.client[*].network_interface[0].network_ip)}"
+  )
+}

@@ -2,4 +2,7 @@ project_id = "your-gcp-project"
 region     = "your-region"
 zone       = "your-zone"
 
+
+enable_monitoring = true
+
 repo_url = "https://github.com/ecce-machina/lustre_helpers.git"

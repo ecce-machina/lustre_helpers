@@ -1,5 +1,5 @@
 variable "enable_monitoring" {
-  description = "Deploy Prometheus/Grafana monitoring node"
+  description = "Install Prometheus and Grafana on client1"
   type        = bool
   default     = false
 }
